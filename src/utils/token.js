@@ -1,1 +1,2 @@
-import dotenv from 'dotenv'
+// import dotenv from 'dotenv'
+const dotenv = require('dotenv');

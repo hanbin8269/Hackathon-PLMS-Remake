@@ -5,6 +5,9 @@
         "database" : "remake_plms",
         "host" : "127.0.0.1",
         "dialect": "mysql",
-        "operatorAliases" : false
+        "operatorAliases" : false,
+        "define": {
+            "timestamps" : false
+        }
     }
 }

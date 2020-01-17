@@ -1,7 +1,10 @@
-import Sequelize from 'sequelize';
-import path from 'path';
+const Sequelize = require('sequelize');
+const path = require('path');
+// import Sequelize from 'sequelize';
+// import path from 'path';
 
-import { User } from './User';
+const { User } = require('./User');
+//import { User } from './User';
 
 const config = require(path.join(__dirname,'..','config','config.json'))['development'];
 
