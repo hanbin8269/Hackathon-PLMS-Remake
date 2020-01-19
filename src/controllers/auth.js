@@ -41,6 +41,9 @@ export const Login = async(ctx) =>{
         throw(500);
     }
 
+    // 토큰 생성
+    let token = null;
+    
 }
 
 export const Register = async(ctx) =>{
