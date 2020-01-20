@@ -1,3 +1,7 @@
+import { generateToken } from '../utils/token';
+import {
+    INVALID_REQUEST_BODY_FORMAT, EXISTING_EMAIL, INVALID_ACCOUNT, UNVERIFIED_ACCOUNT, INVALID_VERIFICATION_CODE, INVALID_VERIFICATION_KEY
+} from 'errors/error';
 // import Joi from 'joi';
 // import crypto from 'crypto';
 // import {user} from 'models';
@@ -42,8 +46,18 @@ export const Login = async(ctx) =>{
     }
 
     // 토큰 생성
-    let token = null;
     
+    const payload = {
+        user_id : account.user_id
+    };
+    
+    let token = null;
+    token = await generateToken(payload);
+
+    ctx.status = 200;
+    ctx.body = {
+        token:token
+    };
 }
 
 export const Register = async(ctx) =>{
@@ -55,7 +69,7 @@ export const Register = async(ctx) =>{
     console.log(ctx.request.body);
     const result = Joi.validate(ctx.request.body, bodyFormat);
     if (result.error){
-        throw(500,e); // 형식에 맞지 않음
+        return 0; // 형식에 맞지 않음
     }
 
     const existEmail = await user.findOne({
@@ -65,7 +79,7 @@ export const Register = async(ctx) =>{
     });
 
     if (existEmail != null){
-        throw(500,e); // 이미 있는 이메일
+        return 0; // 이미 있는 이메일
     }
 
     
