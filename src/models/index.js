@@ -4,6 +4,7 @@ const path = require('path');
 // import path from 'path';
 
 const { User } = require('./User');
+const { ParkingLot } = require('./ParkingLot');
 //import { User } from './User';
 
 const config = require(path.join(__dirname,'..','config','config.json'))['development'];
@@ -16,5 +17,5 @@ const sequelize = new Sequelize(
 )
 
 const user = User(sequelize, Sequelize);
-
-export { sequelize, Sequelize, user };
+const parkingLot = ParkingLot(sequelize,Sequelize);
+export { sequelize, Sequelize, user, parkingLot };

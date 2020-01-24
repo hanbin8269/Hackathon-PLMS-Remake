@@ -23,7 +23,8 @@ export const Login = async(ctx) =>{
     const Result = Joi.validate(ctx.request.body, bodyFormat);
 
     if (Result.error){
-        throw(500,Result.error);
+    // 형식 오류
+        throw INVALID_REQUEST_BODY_FORMAT;
     }
 
     // 있는 이메일인지 검사
@@ -35,14 +36,14 @@ export const Login = async(ctx) =>{
 
     if (account == null){ 
         // 이메일 없음
-        throw(500)
+        throw INVALID_ACCOUNT;
     }
     
     const input = crypto.createHmac('sha256', process.env.PASSWORD_KEY).update(ctx.request.body.password).digest('hex');
 
     if (account.password != input){
         // 계정의 비밀번호와 입력이 다를때
-        throw(500);
+        throw INVALID_ACCOUNT;
     }
 
     // 토큰 생성
@@ -58,6 +59,7 @@ export const Login = async(ctx) =>{
     ctx.body = {
         token:token
     };
+    console.log(ctx.user);
 }
 
 export const Register = async(ctx) =>{
@@ -69,7 +71,8 @@ export const Register = async(ctx) =>{
     console.log(ctx.request.body);
     const result = Joi.validate(ctx.request.body, bodyFormat);
     if (result.error){
-        return 0; // 형식에 맞지 않음
+    // 형식에 맞지 않음
+        throw UNVERIFIED_ACCOUNT;
     }
 
     const existEmail = await user.findOne({
@@ -79,7 +82,7 @@ export const Register = async(ctx) =>{
     });
 
     if (existEmail != null){
-        return 0; // 이미 있는 이메일
+        throw EXISTING_EMAIL; // 이미 있는 이메일
     }
 
     
