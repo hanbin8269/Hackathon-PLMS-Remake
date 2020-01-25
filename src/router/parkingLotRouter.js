@@ -7,6 +7,6 @@ parkingLotManage.post('/create',CreateParkingLot);
 
 const parkingLotRouter = new Router;
 
-parkingLotRouter.use('/parking-lot',parkingLotManage.route());
+parkingLotRouter.use('/parking-lot',parkingLotManage.routes());
 
 module.exports = parkingLotRouter;

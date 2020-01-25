@@ -59,7 +59,7 @@ export const Login = async(ctx) =>{
     ctx.body = {
         token:token
     };
-    console.log(ctx.user);
+    ctx.cookies.set('access_token',token,{ httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 7 })
 }
 
 export const Register = async(ctx) =>{
