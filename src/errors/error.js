@@ -14,7 +14,13 @@ module.exports.INVALID_REQUEST_BODY_FORMAT = {
     statusCode: 422,
     code: '잘못된 요청 데이터 형식',
     message: '요청한 데이터의 형식이 올바르지 않습니다.'
-};
+}
+
+module.exports.COULD_NOT_LOAD_TOKEN = {
+    statusCode: 500,
+    code: '토큰을 불러올수 없음',
+    message : '토큰을 불러 올 수 없습니다'
+}
 
 module.exports.EXISTING_EMAIL = {
     statusCode: 422,
