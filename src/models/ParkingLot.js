@@ -5,6 +5,10 @@ export const ParkingLot = (sequelize,DataTypes) =>{
             primaryKey:true,
             autoIncrement:true
         },
+        owner_id : {
+            type : DataTypes.INTEGER,
+            allownull : false
+        },
         name : {
             type : DataTypes.STRING,
             default : '익명의 주차장',
