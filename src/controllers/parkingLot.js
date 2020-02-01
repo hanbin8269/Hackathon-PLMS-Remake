@@ -89,8 +89,16 @@ export const UpdateParkingLot = async (ctx) =>{
         throw COULD_NOT_LOAD_TOKEN; // 토큰을 불러 올 수 없음
     }
     
-    // 현재 로그인 한 유저의 주차장 일 경우에만 변경 할 수 있게 만들기
+    
+    const result = await parkingLot.findOne({
+        where : {
+            "owner_id" : decodedToken.user_id,
+            "parkingLot_id" : ctx.request.body.parkingLot_id
+        }
+    });// 현재 로그인 한 유저의 주차장 일 경우에만 변경 할 수 있게 만들기
+    if (!result) throw NO_PERMISSIONS;
 
+    console.log(result);
     await parkingLot.update({
         "name" : ctx.request.body.name,
         "max_seat" : ctx.request.body.max_seat,
