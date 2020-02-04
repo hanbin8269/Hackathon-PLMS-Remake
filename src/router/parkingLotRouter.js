@@ -1,11 +1,11 @@
 import Router from 'koa-router';
-import { CreateParkingLot, UpdateParkingLot } from 'controllers/parkingLot';
+import { CreateParkingLot, UpdateParkingLot, DeleteParkingLot } from 'controllers/parkingLot';
 
 const parkingLotManage = new Router;
 
 parkingLotManage.post('/create',CreateParkingLot);
-parkingLotManage.post('/update',UpdateParkingLot);
-
+parkingLotManage.put('/update',UpdateParkingLot);
+parkingLotManage.delete('/delete',DeleteParkingLot);
 
 const parkingLotRouter = new Router;
 
