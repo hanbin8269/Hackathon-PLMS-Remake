@@ -33,7 +33,11 @@ module.exports.EXISTING_PARKING_LOT = {
     code : '존재하는 주차장',
     message: '이미 존재하는 주차장 입니다.'
 }
-
+module.exports.NONEXISTING_PARKING_LOT = {
+    statusCode: 422,
+    code : '존재하지 않는 주차장',
+    message: '존재하지않는 주차장 입니다.'
+}
 module.exports.INVALID_VERIFICATION_CODE = {
     statusCode: 422,
     code: '잘못된 인증 코드',

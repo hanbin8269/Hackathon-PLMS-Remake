@@ -4,7 +4,7 @@ import { parkingLot } from 'models';
 import { decodeToken} from 'utils/token';
 
 import {
-    NO_PERMISSIONS, COULD_NOT_LOAD_TOKEN, EXISTING_PARKING_LOT, INVALID_REQUEST_BODY_FORMAT, EXISTING_EMAIL, INVALID_ACCOUNT, UNVERIFIED_ACCOUNT, INVALID_VERIFICATION_CODE, INVALID_VERIFICATION_KEY
+    NONEXISTING_PARKING_LOT, NO_PERMISSIONS, COULD_NOT_LOAD_TOKEN, EXISTING_PARKING_LOT, INVALID_REQUEST_BODY_FORMAT, EXISTING_EMAIL, INVALID_ACCOUNT, UNVERIFIED_ACCOUNT, INVALID_VERIFICATION_CODE, INVALID_VERIFICATION_KEY
 } from 'errors/error';
 import { decode } from 'jsonwebtoken';
 import { AUTH_REQUIRED } from '../errors/error';
@@ -143,4 +143,23 @@ export const DeleteParkingLot = async (ctx) =>{
             "parkingLot_id" : result_parkingLot_id
         }
     })
+}
+
+export const ReadParkingLot = async (ctx) =>{
+    const bodyFormat = Joi.object().keys({
+        parkingLot_id : Joi.number().required()
+    });
+
+    const Result = Joi.validate(ctx.request.body, bodyFormat);
+    if (Result.error) throw INVALID_REQUEST_BODY_FORMAT;
+
+    const parkingLot_info = await parkingLot.findOne({
+        where : {
+            "parkingLot_id" : ctx.request.body.parkingLot_id
+        }
+    });
+
+    if (!parkingLot_info) throw NONEXISTING_PARKING_LOT;
+
+    ctx.body = parkingLot_info["dataValues"];
 }
