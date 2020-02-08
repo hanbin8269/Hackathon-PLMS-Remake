@@ -9,7 +9,7 @@ import {
 import { decode } from 'jsonwebtoken';
 import { AUTH_REQUIRED } from '../errors/error';
 
-export const CreateParkingLot = async (ctx) => {
+const CreateParkingLot = async (ctx) => {
     const bodyFormat = Joi.object().keys({
         name : Joi.string().required(),
         max_seat : Joi.number().required(),
@@ -61,7 +61,27 @@ export const CreateParkingLot = async (ctx) => {
         // 주차장 주인 정보 (owner_id)
     })
 }
-export const UpdateParkingLot = async (ctx) =>{
+
+const ReadParkingLot = async (ctx) =>{
+    const bodyFormat = Joi.object().keys({
+        parkingLot_id : Joi.number().required()
+    });
+
+    const Result = Joi.validate(ctx.request.body, bodyFormat);
+    if (Result.error) throw INVALID_REQUEST_BODY_FORMAT;
+
+    const parkingLot_info = await parkingLot.findOne({
+        where : {
+            "parkingLot_id" : ctx.request.body.parkingLot_id
+        }
+    });
+
+    if (!parkingLot_info) throw NONEXISTING_PARKING_LOT;
+
+    ctx.body = parkingLot_info["dataValues"];
+}
+
+const UpdateParkingLot = async (ctx) =>{
     const bodyFormat = Joi.object().keys({
         parkingLot_id : Joi.number().required(),
         name : Joi.string().required(),
@@ -81,7 +101,6 @@ export const UpdateParkingLot = async (ctx) =>{
     var decodedToken = null;
     try {
         decodedToken = await decodeToken(token);
-        console.log(decodedToken + "현재 로그인 한 유저의 ID : "+decodedToken.user_id);
     }catch (e){
         throw COULD_NOT_LOAD_TOKEN; // 토큰을 불러 올 수 없음
     }
@@ -110,7 +129,7 @@ export const UpdateParkingLot = async (ctx) =>{
 
 }
 
-export const DeleteParkingLot = async (ctx) =>{
+const DeleteParkingLot = async (ctx) =>{
     const bodyFormat = Joi.object().keys({
         parkingLot_id : Joi.number().required()
     });
@@ -145,21 +164,6 @@ export const DeleteParkingLot = async (ctx) =>{
     })
 }
 
-export const ReadParkingLot = async (ctx) =>{
-    const bodyFormat = Joi.object().keys({
-        parkingLot_id : Joi.number().required()
-    });
 
-    const Result = Joi.validate(ctx.request.body, bodyFormat);
-    if (Result.error) throw INVALID_REQUEST_BODY_FORMAT;
 
-    const parkingLot_info = await parkingLot.findOne({
-        where : {
-            "parkingLot_id" : ctx.request.body.parkingLot_id
-        }
-    });
-
-    if (!parkingLot_info) throw NONEXISTING_PARKING_LOT;
-
-    ctx.body = parkingLot_info["dataValues"];
-}
+export {CreateParkingLot, ReadParkingLot, UpdateParkingLot, DeleteParkingLot};
